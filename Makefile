@@ -6,11 +6,6 @@ PYTHON := /usr/bin/python3
 VENV := .venv
 ACTIVATE := source $(VENV)/bin/activate
 
-APP_UID := $(shell id -u)
-APP_GID := $(shell id -g)
-export APP_UID
-export APP_GID
-
 venv:
 	$(PYTHON) -m venv $(VENV)
 
@@ -30,11 +25,17 @@ run:
 build-image:
 	docker build -t pyurls .
 
+run-image:
+	docker run -it -p "8000:8000" pyurls
+
 up:
-	APP_UID=$(APP_UID) APP_GID=$(APP_GID) docker compose up -d
+	docker compose up -d
 
 down:
 	docker compose down
+
+remove-volume:
+	docker volume rm pyurls_var -f
 
 
 .PHONY: clean dev venv install image run up down

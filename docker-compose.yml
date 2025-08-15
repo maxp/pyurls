@@ -1,0 +1,13 @@
+
+services:
+  pyurls:
+    build: .
+    user: "${APP_UID}:${APP_GID}"
+    container_name: pyurls
+    ports:
+      - "8000:8000"
+    volumes:
+      - app_var:/app/var
+
+volumes:
+  app_var:

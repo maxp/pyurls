@@ -17,14 +17,22 @@
 - OpenAPI docs: `/docs`
 
 
-## Setup
+## Запуск приложения
 
 Требуется линукс система с установленным Python-3.11, make, Docker.
 
-- `make install`
+- Создание базы данных делается отдельным шагом `make initdb`
 
+- Запуск девелоперского окружения `make dev`
+
+- Запуск/остановка в докере `make up` / `make down`
+
+- Сваггер интерфейс приложения `http://localhost:8000/docs`
+
+- Инициализация девелоперрского окружения `make install`
 
 
 ## TODO
 
-- Заменить `pip` на `uv`.
+- ? Заменить `pip` на `uv`.
+- ? ENV UV_COMPILE_BYTECODE=1

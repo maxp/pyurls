@@ -5,8 +5,9 @@ from contextlib import asynccontextmanager
 from fastapi import APIRouter, Form, Body, Depends, HTTPException, FastAPI
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
+from app import config as conf
 from app.database import get_db, AsyncSQLiteDB
-from app.short_url import is_valid_url, ival_code, make_short_url
+from app.short_url import is_valid_url, ival_code, random_code, make_short_url
 
 logger = logging.getLogger(__name__)
 
@@ -21,8 +22,12 @@ async def shorten(url: Annotated[str, Form(..., description="original url to be 
                   db: AsyncSQLiteDB = Depends(get_db)) -> ShortenResponse:
     if not is_valid_url(url):
         raise HTTPException(status_code=400, detail=f"incorrect url submitted: {url}")
-    ival = await db.next_ival()
-    code = ival_code(ival)
+    if conf.NEXT_SEQ:
+        ival = await db.next_ival()
+        code = ival_code(ival)
+    else:
+        # NODE: collisions are assumed to be unlikely and therefore are not handled
+        code = random_code()
     await db.insert_url(code, url)
     logger.debug(f"shorten: {url=} {code=}")
     return {"short_url": make_short_url(code)}

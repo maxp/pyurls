@@ -5,6 +5,8 @@ services:
     build: .
     image: pyurls
     container_name: pyurls
+    # environment:
+    #   NEXT_SEQ: "1"
     ports:
       - "8000:8000"
     volumes:

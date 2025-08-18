@@ -28,7 +28,7 @@ build-image:
 run-image:
 	docker run -it -p "8000:8000" pyurls
 
-up:
+up: build-image
 	docker compose up -d
 
 down:
